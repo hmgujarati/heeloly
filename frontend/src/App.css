@@ -11,17 +11,25 @@
 }
 
 :root {
-  /* Gothic Color Palette */
+  /* Gothic Color Palette - As per document specifications */
   --bg-primary: #0a0a0a;
   --bg-secondary: #1a1a1a;
   --bg-card: #151515;
   --text-primary: #e0e0e0;
   --text-secondary: #a0a0a0;
   --text-muted: #666666;
+  
+  /* Accent Colors - Blood Red, Silver, Gold (small accents only) */
   --accent-red: #8b0000;
+  --accent-red-light: #a00000;
   --accent-silver: #c0c0c0;
+  --accent-silver-dark: #8a8a8a;
   --accent-gold: #d4af37;
+  --accent-gold-dark: #b8941f;
+  
   --border-color: rgba(139, 0, 0, 0.3);
+  --border-silver: rgba(192, 192, 192, 0.2);
+  --border-gold: rgba(212, 175, 55, 0.2);
   --hover-bg: rgba(139, 0, 0, 0.1);
   
   /* Spacing */
