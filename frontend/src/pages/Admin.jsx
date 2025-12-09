@@ -28,8 +28,8 @@ const Admin = () => {
     try {
       setLoading(true);
       const [newslettersRes, contactsRes] = await Promise.all([
-        axios.get(`${API}/newsletter/subscribers`),
-        axios.get(`${API}/contact/inquiries`)
+        axios.get(`${API}/admin/newsletters`),
+        axios.get(`${API}/admin/contacts`)
       ]);
       setNewsletters(newslettersRes.data);
       setContacts(contactsRes.data);
