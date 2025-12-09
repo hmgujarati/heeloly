@@ -94,6 +94,66 @@ async def get_status_checks():
     
     return status_checks
 
+# Newsletter endpoints
+@api_router.post("/newsletter/subscribe", response_model=Newsletter)
+async def subscribe_newsletter(input: NewsletterSubscribe):
+    # Check if email already exists
+    existing = await db.newsletters.find_one({"email": input.email}, {"_id": 0})
+    if existing:
+        if existing.get("active", True):
+            raise HTTPException(status_code=400, detail="Email already subscribed")
+        # Reactivate subscription
+        await db.newsletters.update_one(
+            {"email": input.email},
+            {"$set": {"active": True, "subscribed_at": datetime.now(timezone.utc).isoformat()}}
+        )
+        # Convert timestamp back to datetime for response
+        if isinstance(existing['subscribed_at'], str):
+            existing['subscribed_at'] = datetime.fromisoformat(existing['subscribed_at'])
+        return Newsletter(**existing)
+    
+    # Create new subscription
+    newsletter = Newsletter(email=input.email)
+    doc = newsletter.model_dump()
+    doc['subscribed_at'] = doc['subscribed_at'].isoformat()
+    
+    await db.newsletters.insert_one(doc)
+    return newsletter
+
+@api_router.get("/newsletter/subscribers", response_model=List[Newsletter])
+async def get_subscribers():
+    subscribers = await db.newsletters.find({"active": True}, {"_id": 0}).to_list(1000)
+    
+    # Convert ISO string timestamps back to datetime objects
+    for sub in subscribers:
+        if isinstance(sub['subscribed_at'], str):
+            sub['subscribed_at'] = datetime.fromisoformat(sub['subscribed_at'])
+    
+    return subscribers
+
+# Contact endpoints
+@api_router.post("/contact/inquiry", response_model=Contact)
+async def submit_inquiry(input: ContactInquiry):
+    contact = Contact(**input.model_dump())
+    
+    # Convert to dict and serialize datetime to ISO string for MongoDB
+    doc = contact.model_dump()
+    doc['submitted_at'] = doc['submitted_at'].isoformat()
+    
+    await db.contacts.insert_one(doc)
+    return contact
+
+@api_router.get("/contact/inquiries", response_model=List[Contact])
+async def get_inquiries():
+    inquiries = await db.contacts.find({}, {"_id": 0}).sort("submitted_at", -1).to_list(1000)
+    
+    # Convert ISO string timestamps back to datetime objects
+    for inquiry in inquiries:
+        if isinstance(inquiry['submitted_at'], str):
+            inquiry['submitted_at'] = datetime.fromisoformat(inquiry['submitted_at'])
+    
+    return inquiries
+
 # Include the router in the main app
 app.include_router(api_router)
 
