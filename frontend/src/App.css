@@ -822,8 +822,8 @@ body {
 
 .book-card:hover {
   transform: translateY(-5px);
-  border-color: var(--accent-red);
-  box-shadow: 0 10px 40px rgba(139, 0, 0, 0.3);
+  border-color: var(--accent-silver);
+  box-shadow: 0 10px 40px rgba(192, 192, 192, 0.2), 0 0 20px rgba(212, 175, 55, 0.1);
 }
 
 .book-card-image {
