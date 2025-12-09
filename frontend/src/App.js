@@ -10,6 +10,7 @@ import About from "./pages/About";
 import Books from "./pages/Books";
 import Extras from "./pages/Extras";
 import Contact from "./pages/Contact";
+import Admin from "./pages/Admin";
 
 function App() {
   useEffect(() => {
