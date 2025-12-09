@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Instagram, Twitter, BookOpen, Mail, Facebook } from 'lucide-react';
 import { authorInfo } from '../data/author';
 import { Button } from './ui/button';
-import SwordWingsLogo from './SwordWingsLogo';
 
 const Footer = () => {
   return (
@@ -12,7 +11,11 @@ const Footer = () => {
         {/* Footer Top */}
         <div className="footer-top">
           <div className="footer-brand">
-            <SwordWingsLogo size={80} />
+            <img 
+              src="https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/us3nn3v6_logo%20Heeloly%20u.png" 
+              alt="Heeloly Upasani Logo" 
+              className="footer-logo-img"
+            />
             <h3 className="footer-brand-name">Heeloly Upasani</h3>
             <p className="footer-tagline">Stories that inspire, transform, and resonate</p>
           </div>
