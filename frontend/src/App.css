@@ -522,14 +522,7 @@ body {
   z-index: 3;
   text-align: center;
   animation: fadeInUp 1s ease;
-}
-
-.hero-logo {
-  max-width: 400px;
-  width: 80%;
-  height: auto;
-  margin-bottom: var(--spacing-lg);
-  filter: drop-shadow(0 0 30px rgba(192, 192, 192, 0.4)) drop-shadow(0 0 60px rgba(139, 0, 0, 0.3));
+  margin-top: 300px;
 }
 
 .hero-title {
