@@ -5,11 +5,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict, EmailStr
-from typing import List, Optional
-import uuid
-from datetime import datetime, timezone
-
+from datetime import datetime
+import bcrypt
+from models import *
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -19,140 +17,256 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# Create the main app without a prefix
+# Create the main app
 app = FastAPI()
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-# Define Models
-class StatusCheck(BaseModel):
-    model_config = ConfigDict(extra="ignore")  # Ignore MongoDB's _id field
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+# ============================================
+# HELPER FUNCTIONS
+# ============================================
 
-class StatusCheckCreate(BaseModel):
-    client_name: str
+def hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-class NewsletterSubscribe(BaseModel):
-    email: EmailStr
+def verify_password(password: str, hashed: str) -> bool:
+    return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
 
-class Newsletter(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    email: EmailStr
-    subscribed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    active: bool = True
+async def init_admin():
+    """Initialize admin settings with default password"""
+    existing = await db.admin_settings.find_one({"id": "admin_settings"})
+    if not existing:
+        default_password = hash_password("heeloly2025")
+        admin = {
+            "id": "admin_settings",
+            "password_hash": default_password,
+            "author_name": "Heeloly Upasani",
+            "author_bio": "",
+            "author_photo": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
+            "author_email": "heelolyverse@gmail.com",
+            "social_links": {
+                "instagram": "https://www.instagram.com/authorheelolyupasani/",
+                "goodreads": "https://www.goodreads.com/author/show/54936700.Heeloly_Upasani",
+                "twitter": "https://x.com/heelolyupasani",
+                "facebook": "#",
+                "pinterest": "#",
+                "spotify": "#"
+            },
+            "updated_at": datetime.utcnow()
+        }
+        await db.admin_settings.insert_one(admin)
+        logger.info("Admin settings initialized")
 
-class ContactInquiry(BaseModel):
-    name: str
-    email: EmailStr
-    subject: Optional[str] = None
-    message: str
+# ============================================
+# PUBLIC ROUTES
+# ============================================
 
-class Contact(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    name: str
-    email: EmailStr
-    subject: Optional[str] = None
-    message: str
-    submitted_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    status: str = "new"
-
-# Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Heeloly Upasani Author Website API"}
 
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.model_dump()
-    status_obj = StatusCheck(**status_dict)
-    
-    # Convert to dict and serialize datetime to ISO string for MongoDB
-    doc = status_obj.model_dump()
-    doc['timestamp'] = doc['timestamp'].isoformat()
-    
-    _ = await db.status_checks.insert_one(doc)
-    return status_obj
-
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    # Exclude MongoDB's _id field from the query results
-    status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
-    
-    # Convert ISO string timestamps back to datetime objects
-    for check in status_checks:
-        if isinstance(check['timestamp'], str):
-            check['timestamp'] = datetime.fromisoformat(check['timestamp'])
-    
-    return status_checks
-
-# Newsletter endpoints
+# Newsletter Routes
 @api_router.post("/newsletter/subscribe", response_model=Newsletter)
-async def subscribe_newsletter(input: NewsletterSubscribe):
-    # Check if email already exists
-    existing = await db.newsletters.find_one({"email": input.email}, {"_id": 0})
+async def subscribe_newsletter(input: NewsletterCreate):
+    existing = await db.newsletters.find_one({"email": input.email})
     if existing:
         if existing.get("active", True):
             raise HTTPException(status_code=400, detail="Email already subscribed")
-        # Reactivate subscription
         await db.newsletters.update_one(
             {"email": input.email},
-            {"$set": {"active": True, "subscribed_at": datetime.now(timezone.utc).isoformat()}}
+            {"$set": {"active": True, "subscribed_at": datetime.utcnow()}}
         )
-        # Convert timestamp back to datetime for response
-        if isinstance(existing['subscribed_at'], str):
-            existing['subscribed_at'] = datetime.fromisoformat(existing['subscribed_at'])
         return Newsletter(**existing)
     
-    # Create new subscription
     newsletter = Newsletter(email=input.email)
-    doc = newsletter.model_dump()
-    doc['subscribed_at'] = doc['subscribed_at'].isoformat()
-    
-    await db.newsletters.insert_one(doc)
+    await db.newsletters.insert_one(newsletter.dict())
     return newsletter
 
-@api_router.get("/newsletter/subscribers", response_model=List[Newsletter])
-async def get_subscribers():
-    subscribers = await db.newsletters.find({"active": True}, {"_id": 0}).to_list(1000)
-    
-    # Convert ISO string timestamps back to datetime objects
-    for sub in subscribers:
-        if isinstance(sub['subscribed_at'], str):
-            sub['subscribed_at'] = datetime.fromisoformat(sub['subscribed_at'])
-    
-    return subscribers
-
-# Contact endpoints
+# Contact Routes
 @api_router.post("/contact/inquiry", response_model=Contact)
-async def submit_inquiry(input: ContactInquiry):
-    contact = Contact(**input.model_dump())
-    
-    # Convert to dict and serialize datetime to ISO string for MongoDB
-    doc = contact.model_dump()
-    doc['submitted_at'] = doc['submitted_at'].isoformat()
-    
-    await db.contacts.insert_one(doc)
+async def submit_inquiry(input: ContactCreate):
+    contact = Contact(**input.dict())
+    await db.contacts.insert_one(contact.dict())
     return contact
 
-@api_router.get("/contact/inquiries", response_model=List[Contact])
-async def get_inquiries():
-    inquiries = await db.contacts.find({}, {"_id": 0}).sort("submitted_at", -1).to_list(1000)
+# Books Routes (Public)
+@api_router.get("/books", response_model=List[Book])
+async def get_books():
+    books = await db.books.find().sort("created_at", -1).to_list(1000)
+    return [Book(**book) for book in books]
+
+@api_router.get("/books/{book_id}", response_model=Book)
+async def get_book(book_id: str):
+    book = await db.books.find_one({"id": book_id})
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return Book(**book)
+
+# FAQ Routes (Public)
+@api_router.get("/faqs", response_model=List[FAQ])
+async def get_faqs():
+    faqs = await db.faqs.find().sort("order", 1).to_list(1000)
+    return [FAQ(**faq) for faq in faqs]
+
+# Extras Routes (Public)
+@api_router.get("/extras", response_model=List[ExtraLink])
+async def get_extras():
+    extras = await db.extras.find({"active": True}).sort("order", 1).to_list(1000)
+    return [ExtraLink(**extra) for extra in extras]
+
+# Author Info (Public)
+@api_router.get("/author")
+async def get_author_info():
+    settings = await db.admin_settings.find_one({"id": "admin_settings"})
+    if not settings:
+        raise HTTPException(status_code=404, detail="Author info not found")
+    return {
+        "name": settings.get("author_name", "Heeloly Upasani"),
+        "bio": settings.get("author_bio", ""),
+        "photo": settings.get("author_photo", ""),
+        "email": settings.get("author_email", ""),
+        "social_links": settings.get("social_links", {})
+    }
+
+# ============================================
+# ADMIN ROUTES
+# ============================================
+
+# Admin Login
+@api_router.post("/admin/login")
+async def admin_login(credentials: AdminLogin):
+    settings = await db.admin_settings.find_one({"id": "admin_settings"})
+    if not settings:
+        await init_admin()
+        settings = await db.admin_settings.find_one({"id": "admin_settings"})
     
-    # Convert ISO string timestamps back to datetime objects
-    for inquiry in inquiries:
-        if isinstance(inquiry['submitted_at'], str):
-            inquiry['submitted_at'] = datetime.fromisoformat(inquiry['submitted_at'])
+    if verify_password(credentials.password, settings["password_hash"]):
+        return {"success": True, "message": "Login successful"}
+    raise HTTPException(status_code=401, detail="Invalid password")
+
+# Change Password
+@api_router.post("/admin/change-password")
+async def change_password(data: PasswordChange):
+    settings = await db.admin_settings.find_one({"id": "admin_settings"})
+    if not settings:
+        raise HTTPException(status_code=404, detail="Admin settings not found")
     
-    return inquiries
+    if not verify_password(data.current_password, settings["password_hash"]):
+        raise HTTPException(status_code=401, detail="Current password is incorrect")
+    
+    new_hash = hash_password(data.new_password)
+    await db.admin_settings.update_one(
+        {"id": "admin_settings"},
+        {"$set": {"password_hash": new_hash, "updated_at": datetime.utcnow()}}
+    )
+    return {"success": True, "message": "Password changed successfully"}
+
+# Newsletter Management
+@api_router.get("/admin/newsletters", response_model=List[Newsletter])
+async def get_newsletters():
+    newsletters = await db.newsletters.find().sort("subscribed_at", -1).to_list(1000)
+    return [Newsletter(**n) for n in newsletters]
+
+# Contact Management
+@api_router.get("/admin/contacts", response_model=List[Contact])
+async def get_contacts():
+    contacts = await db.contacts.find().sort("submitted_at", -1).to_list(1000)
+    return [Contact(**c) for c in contacts]
+
+# Books Management (Admin)
+@api_router.post("/admin/books", response_model=Book)
+async def create_book(book: BookCreate):
+    new_book = Book(**book.dict())
+    await db.books.insert_one(new_book.dict())
+    return new_book
+
+@api_router.put("/admin/books/{book_id}", response_model=Book)
+async def update_book(book_id: str, book: BookUpdate):
+    existing = await db.books.find_one({"id": book_id})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Book not found")
+    
+    update_data = {k: v for k, v in book.dict().items() if v is not None}
+    update_data["updated_at"] = datetime.utcnow()
+    
+    await db.books.update_one({"id": book_id}, {"$set": update_data})
+    updated = await db.books.find_one({"id": book_id})
+    return Book(**updated)
+
+@api_router.delete("/admin/books/{book_id}")
+async def delete_book(book_id: str):
+    result = await db.books.delete_one({"id": book_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return {"success": True, "message": "Book deleted"}
+
+# FAQ Management (Admin)
+@api_router.post("/admin/faqs", response_model=FAQ)
+async def create_faq(faq: FAQCreate):
+    new_faq = FAQ(**faq.dict())
+    await db.faqs.insert_one(new_faq.dict())
+    return new_faq
+
+@api_router.put("/admin/faqs/{faq_id}", response_model=FAQ)
+async def update_faq(faq_id: str, faq: FAQUpdate):
+    existing = await db.faqs.find_one({"id": faq_id})
+    if not existing:
+        raise HTTPException(status_code=404, detail="FAQ not found")
+    
+    update_data = {k: v for k, v in faq.dict().items() if v is not None}
+    update_data["updated_at"] = datetime.utcnow()
+    
+    await db.faqs.update_one({"id": faq_id}, {"$set": update_data})
+    updated = await db.faqs.find_one({"id": faq_id})
+    return FAQ(**updated)
+
+@api_router.delete("/admin/faqs/{faq_id}")
+async def delete_faq(faq_id: str):
+    result = await db.faqs.delete_one({"id": faq_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="FAQ not found")
+    return {"success": True, "message": "FAQ deleted"}
+
+# Extras Management (Admin)
+@api_router.post("/admin/extras", response_model=ExtraLink)
+async def create_extra(extra: ExtraLinkCreate):
+    new_extra = ExtraLink(**extra.dict())
+    await db.extras.insert_one(new_extra.dict())
+    return new_extra
+
+@api_router.put("/admin/extras/{extra_id}", response_model=ExtraLink)
+async def update_extra(extra_id: str, extra: ExtraLinkUpdate):
+    existing = await db.extras.find_one({"id": extra_id})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Extra not found")
+    
+    update_data = {k: v for k, v in extra.dict().items() if v is not None}
+    update_data["updated_at"] = datetime.utcnow()
+    
+    await db.extras.update_one({"id": extra_id}, {"$set": update_data})
+    updated = await db.extras.find_one({"id": extra_id})
+    return ExtraLink(**updated)
+
+@api_router.delete("/admin/extras/{extra_id}")
+async def delete_extra(extra_id: str):
+    result = await db.extras.delete_one({"id": extra_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Extra not found")
+    return {"success": True, "message": "Extra deleted"}
+
+# Author Info Management (Admin)
+@api_router.put("/admin/author")
+async def update_author_info(data: dict):
+    await db.admin_settings.update_one(
+        {"id": "admin_settings"},
+        {"$set": {**data, "updated_at": datetime.utcnow()}}
+    )
+    return {"success": True, "message": "Author info updated"}
 
 # Include the router in the main app
 app.include_router(api_router)
@@ -160,17 +274,15 @@ app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+@app.on_event("startup")
+async def startup_db():
+    await init_admin()
+    logger.info("Database initialized")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
