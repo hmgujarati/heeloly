@@ -63,6 +63,11 @@ const Admin = () => {
     a.click();
   };
 
+  const handleLogout = () => {
+    sessionStorage.removeItem('adminAuth');
+    navigate('/admin-login');
+  };
+
   if (loading) {
     return (
       <div className="admin-page">
@@ -76,8 +81,16 @@ const Admin = () => {
   return (
     <div className="admin-page" style={{ padding: '100px 0', minHeight: '100vh' }}>
       <div className="container">
-        <h1 className="page-title">Admin Dashboard</h1>
-        <p className="page-description">Manage newsletter subscribers and contact inquiries</p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <div>
+            <h1 className="page-title">Admin Dashboard</h1>
+            <p className="page-description">Manage newsletter subscribers and contact inquiries</p>
+          </div>
+          <Button className="btn-secondary" onClick={handleLogout}>
+            <LogOut size={18} style={{ marginRight: '8px' }} />
+            Logout
+          </Button>
+        </div>
 
         {/* Tabs */}
         <div className="admin-tabs" style={{ marginBottom: '40px', display: 'flex', gap: '20px', borderBottom: '1px solid var(--border-color)' }}>
