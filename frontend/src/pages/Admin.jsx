@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from '../components/ui/button';
-import { Download, Mail, User, Calendar } from 'lucide-react';
+import { Download, Mail, User, Calendar, LogOut } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const Admin = () => {
+  const navigate = useNavigate();
   const [newsletters, setNewsletters] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('newsletters');
 
   useEffect(() => {
+    // Check if user is authenticated
+    const isAuth = sessionStorage.getItem('adminAuth');
+    if (!isAuth) {
+      navigate('/admin-login');
+      return;
+    }
     fetchData();
-  }, []);
+  }, [navigate]);
 
   const fetchData = async () => {
     try {
