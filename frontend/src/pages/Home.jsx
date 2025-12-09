@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { books, comingSoonBooks } from '../data/books';
 import { ArrowRight } from 'lucide-react';
+import axios from 'axios';
+import { toast } from 'sonner';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const Home = () => {
   const newRelease = books[0];
   const comingSoon = comingSoonBooks[0];
+  const [homeEmail, setHomeEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleHomeSubmit = async (e) => {
+    e.preventDefault();
+    if (!homeEmail) {
+      toast.error('Please enter your email');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await axios.post(`${API}/newsletter/subscribe`, { email: homeEmail });
+      toast.success('Successfully subscribed to newsletter!');
+      setHomeEmail('');
+    } catch (error) {
+      if (error.response?.status === 400) {
+        toast.error('Email already subscribed!');
+      } else {
+        toast.error('Failed to subscribe. Please try again.');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="home-page">
