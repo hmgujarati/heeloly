@@ -992,8 +992,8 @@ body {
 
 .extra-card:hover {
   transform: translateY(-5px);
-  border-color: var(--accent-red);
-  box-shadow: 0 10px 40px rgba(139, 0, 0, 0.3);
+  border-color: var(--accent-gold);
+  box-shadow: 0 10px 40px rgba(212, 175, 55, 0.2), 0 0 15px rgba(192, 192, 192, 0.1);
 }
 
 .extra-icon {
