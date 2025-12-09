@@ -33,7 +33,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/books" element={<Books />} />
+            <Route path="/books" element={<BooksNew />} />
+            <Route path="/books-old" element={<Books />} />
             <Route path="/extras" element={<Extras />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin-login" element={<AdminLogin />} />
