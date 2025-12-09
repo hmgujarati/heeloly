@@ -528,17 +528,19 @@ body {
   font-family: var(--font-serif);
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--accent-silver);
   margin-bottom: var(--spacing-md);
   line-height: 1.2;
+  text-shadow: 0 0 10px rgba(192, 192, 192, 0.2);
 }
 
 .section-subtitle {
   font-family: var(--font-serif);
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--accent-silver);
   margin-bottom: var(--spacing-lg);
+  text-shadow: 0 0 8px rgba(192, 192, 192, 0.15);
 }
 
 .section-description {
