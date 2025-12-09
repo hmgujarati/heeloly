@@ -1,10 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Instagram, Twitter, BookOpen, Mail, Facebook } from 'lucide-react';
 import { authorInfo } from '../data/author';
 import { Button } from './ui/button';
+import axios from 'axios';
+import { toast } from 'sonner';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const Footer = () => {
+  const [footerEmail, setFooterEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleFooterSubmit = async (e) => {
+    e.preventDefault();
+    if (!footerEmail) {
+      toast.error('Please enter your email');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await axios.post(`${API}/newsletter/subscribe`, { email: footerEmail });
+      toast.success('Successfully subscribed to newsletter!');
+      setFooterEmail('');
+    } catch (error) {
+      if (error.response?.status === 400) {
+        toast.error('Email already subscribed!');
+      } else {
+        toast.error('Failed to subscribe. Please try again.');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <footer className="site-footer">
       <div className="container footer-container">
