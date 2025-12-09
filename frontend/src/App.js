@@ -14,6 +14,7 @@ import Extras from "./pages/Extras";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 function App() {
   useEffect(() => {
