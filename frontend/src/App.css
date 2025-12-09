@@ -482,34 +482,38 @@ body {
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(ellipse at 25% 20%, rgba(255, 50, 50, 0.5) 0%, rgba(139, 0, 0, 0.3) 25%, transparent 55%),
-    radial-gradient(ellipse at 75% 30%, rgba(255, 50, 50, 0.45) 0%, rgba(139, 0, 0, 0.25) 25%, transparent 50%),
-    radial-gradient(ellipse at 50% 80%, rgba(255, 50, 50, 0.4) 0%, rgba(139, 0, 0, 0.2) 30%, transparent 60%),
-    linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, transparent 50%);
+    linear-gradient(160deg, transparent 48%, rgba(139, 0, 0, 0.08) 49%, rgba(139, 0, 0, 0.12) 49.5%, transparent 50%),
+    linear-gradient(200deg, transparent 55%, rgba(139, 0, 0, 0.06) 56%, transparent 57%);
   z-index: 1;
-  animation: lightningPulse 2.5s ease-in-out infinite alternate;
+  animation: subtleThunder 6s ease-in-out infinite;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(10, 10, 10, 0.2) 0%, rgba(10, 10, 10, 0.6) 100%);
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.1) 0%, rgba(10, 10, 10, 0.4) 100%);
   z-index: 2;
 }
 
-/* Dramatic red lightning pulse effect */
-@keyframes lightningPulse {
-  0% {
-    opacity: 0.7;
-    filter: brightness(1);
+/* Subtle thunder flash effect */
+@keyframes subtleThunder {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  45% {
+    opacity: 0.3;
   }
   50% {
-    opacity: 1;
-    filter: brightness(1.5);
-  }
-  100% {
     opacity: 0.7;
-    filter: brightness(1);
+  }
+  52% {
+    opacity: 0.4;
+  }
+  54% {
+    opacity: 0.8;
+  }
+  56% {
+    opacity: 0.3;
   }
 }
 
