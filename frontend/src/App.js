@@ -36,10 +36,12 @@ function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/about" element={<AboutNew />} />
+            <Route path="/about-old" element={<About />} />
             <Route path="/books" element={<BooksNew />} />
             <Route path="/books-old" element={<Books />} />
-            <Route path="/extras" element={<Extras />} />
+            <Route path="/extras" element={<ExtrasNew />} />
+            <Route path="/extras-old" element={<Extras />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/admin-old" element={<Admin />} />
