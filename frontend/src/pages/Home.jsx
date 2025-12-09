@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import SwordWingsLogo from '../components/SwordWingsLogo';
 import { books, comingSoonBooks } from '../data/books';
 import { ArrowRight } from 'lucide-react';
 
@@ -14,10 +13,19 @@ const Home = () => {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-background">
+          <img 
+            src="https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png" 
+            alt="Hero Background" 
+            className="hero-image"
+          />
           <div className="hero-overlay"></div>
         </div>
         <div className="hero-content">
-          <SwordWingsLogo size={300} className="hero-logo" />
+          <img 
+            src="https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/us3nn3v6_logo%20Heeloly%20u.png" 
+            alt="Heeloly Upasani Logo" 
+            className="hero-logo"
+          />
           <h1 className="hero-title">Enter In Grey</h1>
         </div>
       </section>
