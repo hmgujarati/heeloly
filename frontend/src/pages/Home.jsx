@@ -109,10 +109,19 @@ const Home = () => {
           <p className="section-description">
             Subscribe to receive updates on new releases, exclusive content, and special offers.
           </p>
-          <div className="newsletter-form">
-            <input type="email" placeholder="Enter your email" className="newsletter-input-inline" />
-            <Button className="btn-primary">Subscribe</Button>
-          </div>
+          <form onSubmit={handleHomeSubmit} className="newsletter-form">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              className="newsletter-input-inline"
+              value={homeEmail}
+              onChange={(e) => setHomeEmail(e.target.value)}
+              disabled={isSubmitting}
+            />
+            <Button type="submit" className="btn-primary" disabled={isSubmitting}>
+              {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+            </Button>
+          </form>
         </div>
       </section>
     </div>
