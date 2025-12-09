@@ -21,7 +21,11 @@ const Header = () => {
     <header className="site-header">
       <div className="container header-container">
         <Link to="/" className="site-logo">
-          Heeloly Upasani
+          <img 
+            src="https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/us3nn3v6_logo%20Heeloly%20u.png" 
+            alt="Heeloly Upasani" 
+            className="header-logo-img"
+          />
         </Link>
 
         {/* Desktop Navigation */}
