@@ -77,10 +77,19 @@ const Footer = () => {
         <div className="footer-newsletter">
           <h3 className="footer-newsletter-title">Stay Updated</h3>
           <p className="footer-newsletter-text">Subscribe to receive updates on new releases, exclusive content, and special offers.</p>
-          <div className="footer-newsletter-form">
-            <input type="email" placeholder="Enter your email" className="footer-email-input" />
-            <Button className="btn-primary">Subscribe</Button>
-          </div>
+          <form onSubmit={handleFooterSubmit} className="footer-newsletter-form">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              className="footer-email-input"
+              value={footerEmail}
+              onChange={(e) => setFooterEmail(e.target.value)}
+              disabled={isSubmitting}
+            />
+            <Button type="submit" className="btn-primary" disabled={isSubmitting}>
+              {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+            </Button>
+          </form>
         </div>
 
         {/* Footer Bottom */}
