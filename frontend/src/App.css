@@ -84,7 +84,8 @@ body {
 .site-header {
   background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-silver);
+  box-shadow: 0 2px 8px rgba(192, 192, 192, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -104,7 +105,21 @@ body {
   font-weight: 700;
   color: var(--text-primary);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.header-logo-img {
+  height: 60px;
+  width: auto;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 10px rgba(192, 192, 192, 0.3));
+}
+
+.header-logo-img:hover {
+  filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5));
+  transform: scale(1.05);
 }
 
 .site-logo:hover {
