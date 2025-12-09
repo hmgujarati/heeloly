@@ -1047,8 +1047,9 @@ body {
   font-family: var(--font-serif);
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--accent-gold);
   margin-bottom: var(--spacing-sm);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
 }
 
 .contact-info-text {
