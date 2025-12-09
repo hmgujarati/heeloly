@@ -600,8 +600,10 @@ body {
 }
 
 .book-badge.coming-soon {
-  background: var(--accent-gold);
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dark));
   color: var(--bg-primary);
+  font-weight: 700;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
 }
 
 .about-preview-section,
