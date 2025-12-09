@@ -147,15 +147,16 @@ body {
   bottom: 0;
   left: 50%;
   width: 0;
-  height: 1px;
-  background: var(--accent-red);
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-silver));
   transition: all 0.3s ease;
   transform: translateX(-50%);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
 }
 
 .nav-link:hover,
 .nav-link.active {
-  color: var(--text-primary);
+  color: var(--accent-silver);
 }
 
 .nav-link:hover::after,
