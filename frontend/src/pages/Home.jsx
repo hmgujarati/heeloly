@@ -21,11 +21,6 @@ const Home = () => {
           <div className="hero-overlay"></div>
         </div>
         <div className="hero-content">
-          <img 
-            src="https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/us3nn3v6_logo%20Heeloly%20u.png" 
-            alt="Heeloly Upasani Logo" 
-            className="hero-logo"
-          />
           <h1 className="hero-title">Enter In Grey</h1>
         </div>
       </section>
