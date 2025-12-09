@@ -37,6 +37,34 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+class NewsletterSubscribe(BaseModel):
+    email: EmailStr
+
+class Newsletter(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    email: EmailStr
+    subscribed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    active: bool = True
+
+class ContactInquiry(BaseModel):
+    name: str
+    email: EmailStr
+    subject: Optional[str] = None
+    message: str
+
+class Contact(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    email: EmailStr
+    subject: Optional[str] = None
+    message: str
+    submitted_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    status: str = "new"
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
