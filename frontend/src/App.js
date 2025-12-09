@@ -40,7 +40,8 @@ function App() {
             <Route path="/extras" element={<Extras />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin-login" element={<AdminLogin />} />
-            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin-old" element={<Admin />} />
+            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </main>
         <Footer />
