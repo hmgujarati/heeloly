@@ -697,8 +697,9 @@ body {
   font-family: var(--font-serif);
   font-size: clamp(2.5rem, 6vw, 4rem);
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--accent-silver);
   margin-bottom: var(--spacing-md);
+  text-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
 }
 
 .page-description {
