@@ -473,7 +473,6 @@ body {
   width: 80%;
   height: auto;
   margin-bottom: var(--spacing-lg);
-  animation: float 6s ease-in-out infinite;
   filter: drop-shadow(0 0 30px rgba(192, 192, 192, 0.4)) drop-shadow(0 0 60px rgba(139, 0, 0, 0.3));
 }
 
