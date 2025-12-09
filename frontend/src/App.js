@@ -8,6 +8,7 @@ import NewsletterPopup from "./components/NewsletterPopup";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Books from "./pages/Books";
+import BooksNew from "./pages/BooksNew";
 import Extras from "./pages/Extras";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
