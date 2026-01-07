@@ -6,6 +6,7 @@ import { Textarea } from '../../components/ui/textarea';
 import { Label } from '../../components/ui/label';
 import { PlusCircle, Edit, Trash2, Save, X } from 'lucide-react';
 import { toast } from 'sonner';
+import ImageUpload from './ImageUpload';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
