@@ -75,6 +75,30 @@ async def init_admin():
 # PUBLIC ROUTES
 # ============================================
 
+@api_router.post("/upload")
+async def upload_file(file: UploadFile = File(...)):
+    """Upload an image file and return the URL"""
+    # Validate file type
+    allowed_types = ["image/jpeg", "image/png", "image/gif", "image/webp"]
+    if file.content_type not in allowed_types:
+        raise HTTPException(status_code=400, detail="Invalid file type. Allowed: JPEG, PNG, GIF, WEBP")
+    
+    # Generate unique filename
+    file_extension = file.filename.split(".")[-1] if "." in file.filename else "jpg"
+    unique_filename = f"{uuid.uuid4()}.{file_extension}"
+    file_path = UPLOADS_DIR / unique_filename
+    
+    # Save the file
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    except Exception as e:
+        logger.error(f"Error saving file: {e}")
+        raise HTTPException(status_code=500, detail="Failed to save file")
+    
+    # Return the URL (will be served from /uploads/)
+    return {"url": f"/uploads/{unique_filename}", "filename": unique_filename}
+
 @api_router.get("/")
 async def root():
     return {"message": "Heeloly Upasani Author Website API"}
