@@ -55,20 +55,16 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Time to Brave the Dark Section */}
+      {/* Book Showcase Section */}
       <section className="brave-dark-section">
         <div className="container">
           <div className="brave-content">
-            <h2 className="section-title">Time to brave the dark...</h2>
             <p className="section-description">
-              It's time to be the groundbreaking edition of A Journey Within and Enter In Grey from bestselling author Heeloly Upasani. Onyx Storm now available for purchase.
+              Explore my collection of poetry that reflects my thoughts, questions, and unspoken wishes. A Journey Within is now available for purchase.
             </p>
             <div className="cta-buttons">
               <Button className="btn-primary" asChild>
-                <a href={newRelease.amazonLink || '#'}>Buy Onyx Storm Now</a>
-              </Button>
-              <Button className="btn-secondary" asChild>
-                <Link to="/books">Discover The Series</Link>
+                <a href="https://amzn.in/d/5WdUQA8" target="_blank" rel="noopener noreferrer">Buy on Amazon</a>
               </Button>
             </div>
           </div>
