@@ -165,9 +165,12 @@ const BooksManager = () => {
                 <Label>Book Number (if series)</Label>
                 <Input name="book_number" type="number" value={formData.book_number || ''} onChange={handleInputChange} />
               </div>
-              <div className="form-group">
-                <Label>Cover Image URL *</Label>
-                <Input name="cover_image" value={formData.cover_image} onChange={handleInputChange} required />
+              <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                <ImageUpload 
+                  value={formData.cover_image}
+                  onChange={(url) => setFormData({ ...formData, cover_image: url })}
+                  label="Cover Image *"
+                />
               </div>
               <div className="form-group">
                 <Label>Status *</Label>
