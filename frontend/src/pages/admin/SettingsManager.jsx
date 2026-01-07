@@ -185,9 +185,12 @@ const SettingsManager = () => {
               <Label>Email *</Label>
               <Input name="author_email" type="email" value={authorInfo.author_email} onChange={handleAuthorChange} required />
             </div>
-            <div className="form-group">
-              <Label>Author Photo URL</Label>
-              <Input name="author_photo" value={authorInfo.author_photo} onChange={handleAuthorChange} placeholder="https://..." />
+            <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+              <ImageUpload 
+                value={authorInfo.author_photo}
+                onChange={(url) => setAuthorInfo({ ...authorInfo, author_photo: url })}
+                label="Author Photo"
+              />
             </div>
           </div>
           <div className="form-group" style={{ marginTop: '20px' }}>
