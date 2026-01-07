@@ -9,6 +9,8 @@ import NewsletterPopup from "./components/NewsletterPopup";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import AboutNew from "./pages/AboutNew";
+import Bio from "./pages/Bio";
+import Faqs from "./pages/Faqs";
 import Books from "./pages/Books";
 import BooksNew from "./pages/BooksNew";
 import Extras from "./pages/Extras";
@@ -49,6 +51,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<AboutNew />} />
+            <Route path="/bio" element={<Bio />} />
+            <Route path="/faqs" element={<Faqs />} />
             <Route path="/about-old" element={<About />} />
             <Route path="/books" element={<BooksNew />} />
             <Route path="/books-old" element={<Books />} />
