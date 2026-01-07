@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -12,20 +13,26 @@ const NewsletterPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    const hasSeenPopup = localStorage.getItem('newsletterPopupSeen');
+    // Don't show popup on admin pages
+    if (location.pathname.startsWith('/admin')) {
+      return;
+    }
+
+    const hasSeenPopup = sessionStorage.getItem('newsletterPopupSeen');
     if (!hasSeenPopup) {
       const timer = setTimeout(() => {
         setIsOpen(true);
-      }, 3000);
+      }, 5000);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [location.pathname]);
 
   const handleClose = () => {
     setIsOpen(false);
-    localStorage.setItem('newsletterPopupSeen', 'true');
+    sessionStorage.setItem('newsletterPopupSeen', 'true');
   };
 
   const handleSubmit = async (e) => {
