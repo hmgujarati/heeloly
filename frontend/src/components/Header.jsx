@@ -1,21 +1,31 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const location = useLocation();
 
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Books', path: '/books' },
-    { name: 'About', path: '/about' },
+    { 
+      name: 'About', 
+      path: '/about',
+      hasDropdown: true,
+      dropdownItems: [
+        { name: 'Bio', path: '/bio' },
+        { name: 'FAQs', path: '/faqs' }
+      ]
+    },
     { name: 'Extras', path: '/extras' },
     { name: 'Contact', path: '/contact' }
   ];
 
   const isActive = (path) => location.pathname === path;
+  const isAboutActive = () => ['/about', '/bio', '/faqs'].includes(location.pathname);
 
   return (
     <header className="site-header">
@@ -31,13 +41,43 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="desktop-nav">
           {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`nav-link ${isActive(link.path) ? 'active' : ''}`}
-            >
-              {link.name}
-            </Link>
+            link.hasDropdown ? (
+              <div 
+                key={link.path} 
+                className="nav-dropdown-container"
+                onMouseEnter={() => setAboutDropdownOpen(true)}
+                onMouseLeave={() => setAboutDropdownOpen(false)}
+              >
+                <button
+                  className={`nav-link nav-dropdown-trigger ${isAboutActive() ? 'active' : ''}`}
+                >
+                  {link.name}
+                  <ChevronDown size={16} className={`dropdown-arrow ${aboutDropdownOpen ? 'open' : ''}`} />
+                </button>
+                {aboutDropdownOpen && (
+                  <div className="nav-dropdown-menu">
+                    {link.dropdownItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={`nav-dropdown-item ${isActive(item.path) ? 'active' : ''}`}
+                        onClick={() => setAboutDropdownOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`nav-link ${isActive(link.path) ? 'active' : ''}`}
+              >
+                {link.name}
+              </Link>
+            )
           ))}
         </nav>
 
@@ -51,14 +91,43 @@ const Header = () => {
       {isMenuOpen && (
         <div className="mobile-nav">
           {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`mobile-nav-link ${isActive(link.path) ? 'active' : ''}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {link.name}
-            </Link>
+            link.hasDropdown ? (
+              <div key={link.path} className="mobile-nav-dropdown">
+                <button 
+                  className={`mobile-nav-link mobile-dropdown-trigger ${isAboutActive() ? 'active' : ''}`}
+                  onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
+                >
+                  {link.name}
+                  <ChevronDown size={16} className={`dropdown-arrow ${aboutDropdownOpen ? 'open' : ''}`} />
+                </button>
+                {aboutDropdownOpen && (
+                  <div className="mobile-dropdown-menu">
+                    {link.dropdownItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        className={`mobile-dropdown-item ${isActive(item.path) ? 'active' : ''}`}
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          setAboutDropdownOpen(false);
+                        }}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`mobile-nav-link ${isActive(link.path) ? 'active' : ''}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            )
           ))}
         </div>
       )}
