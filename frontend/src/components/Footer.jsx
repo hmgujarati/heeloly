@@ -47,8 +47,6 @@ const Footer = () => {
               alt="Heeloly Upasani Logo" 
               className="footer-logo-img"
             />
-            <h3 className="footer-brand-name">Heeloly Upasani</h3>
-            <p className="footer-tagline">Stories that inspire, transform, and resonate</p>
           </div>
 
           {/* Footer Links */}
