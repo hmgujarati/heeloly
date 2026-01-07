@@ -38,9 +38,9 @@ const Faqs = () => {
   return (
     <div className="about-page">
       {/* FAQ Section */}
-      <section className="faq-section" style={{ paddingTop: '120px' }}>
+      <section className="faq-section" style={{ paddingTop: '40px' }}>
         <div className="container">
-          <h1 className="page-title" style={{ textAlign: 'center', marginBottom: '60px' }}>Frequently Asked Questions</h1>
+          <h1 className="page-title" style={{ textAlign: 'center', marginBottom: '40px' }}>Frequently Asked Questions</h1>
           {faqs.length === 0 ? (
             <p style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '40px' }}>
               No FAQs available at the moment.
