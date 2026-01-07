@@ -767,14 +767,17 @@ body {
 
 .books-showcase {
   display: flex;
+  flex-direction: row;
   gap: var(--spacing-lg);
-  justify-content: center;
-  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: nowrap;
 }
 
 .book-display {
   position: relative;
-  width: 300px;
+  width: 220px;
+  flex-shrink: 0;
   transition: transform 0.3s ease;
 }
 
