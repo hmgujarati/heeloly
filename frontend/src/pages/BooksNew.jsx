@@ -109,7 +109,6 @@ const BooksNew = () => {
     <div className="books-page">
       <div className="container">
         <h1 className="page-title">Books</h1>
-        <p className="page-description">Explore the collection of stories that invite you on journeys of self-discovery, resilience, and hope.</p>
         
         {/* Available Books */}
         {availableBooks.length > 0 && (

@@ -39,7 +39,6 @@ const ExtrasNew = () => {
     <div className="extras-page">
       <div className="container">
         <h1 className="page-title">Extras</h1>
-        <p className="page-description">Dive deeper into the world of the stories with playlists, moodboards, and exclusive bonus content.</p>
 
         <div className="extras-grid">
           {extras.map(extra => {
