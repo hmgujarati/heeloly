@@ -2,10 +2,34 @@
 
 ## What's New?
 ✅ Password-protected admin dashboard at `/admin`
+✅ Full CRUD for Books, FAQs, and Extras
 ✅ View newsletter subscribers
 ✅ View contact form submissions  
 ✅ Download CSV exports
-✅ Logout functionality
+✅ Change admin password from dashboard
+
+---
+
+## Step 0: Seed the Database (IMPORTANT - First Time Only!)
+
+After deploying, you need to populate the database with your initial data:
+
+```bash
+# Navigate to backend folder
+cd /path/to/your/project/backend
+
+# Make sure MongoDB is running
+# Then run the seed script:
+python seed_data.py
+```
+
+This will populate:
+- Your books (A Journey Within, Coming Soon)
+- All FAQs (About My Writing, Personal & Reading Preferences, etc.)
+- Extras (Playlist, Moodboard, Bonus Chapters)
+- Admin settings with default password: `heeloly2025`
+
+**Note:** The seed script only adds data if collections are empty. It won't overwrite existing data.
 
 ---
 
