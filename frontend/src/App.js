@@ -43,6 +43,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrollToTop />
         <Header />
         <main className="main-content">
           <Routes>
