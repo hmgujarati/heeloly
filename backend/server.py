@@ -66,10 +66,24 @@ async def init_admin():
                 "pinterest": "#",
                 "spotify": "#"
             },
+            "hero_image": "https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png",
+            "hero_title": "Enter In Grey",
             "updated_at": datetime.utcnow()
         }
         await db.admin_settings.insert_one(admin)
         logger.info("Admin settings initialized")
+
+async def init_hero_settings():
+    """Ensure hero settings exist in admin_settings"""
+    existing = await db.admin_settings.find_one({"id": "admin_settings"})
+    if existing and "hero_image" not in existing:
+        await db.admin_settings.update_one(
+            {"id": "admin_settings"},
+            {"$set": {
+                "hero_image": "https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png",
+                "hero_title": "Enter In Grey"
+            }}
+        )
 
 # ============================================
 # PUBLIC ROUTES
