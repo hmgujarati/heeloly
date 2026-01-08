@@ -30,6 +30,7 @@ const AdminDashboard = () => {
   };
 
   const tabs = [
+    { id: 'hero', label: 'Hero', icon: ImageIcon },
     { id: 'books', label: 'Books', icon: BookOpen },
     { id: 'faqs', label: 'FAQs', icon: MessageSquare },
     { id: 'extras', label: 'Extras', icon: LinkIcon },
