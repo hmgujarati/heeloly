@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -26,7 +27,7 @@ db = client[os.environ['DB_NAME']]
 # Create the main app
 app = FastAPI()
 
-# Serve uploaded files statically
+# Serve uploaded files statically (for local development)
 app.mount("/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
 
 # Create a router with the /api prefix
