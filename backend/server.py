@@ -329,6 +329,7 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup_db():
     await init_admin()
+    await init_hero_settings()
     logger.info("Database initialized")
 
 @app.on_event("shutdown")
