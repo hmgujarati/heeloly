@@ -16,7 +16,8 @@ const Home = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [heroData, setHeroData] = useState({
     hero_image: 'https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png',
-    hero_title: 'Enter In Grey'
+    hero_title: 'Enter In Grey',
+    hero_title_color: '#ffffff'
   });
 
   useEffect(() => {
@@ -28,7 +29,8 @@ const Home = () => {
       const response = await axios.get(`${API}/hero`);
       setHeroData({
         hero_image: response.data.hero_image || heroData.hero_image,
-        hero_title: response.data.hero_title || heroData.hero_title
+        hero_title: response.data.hero_title || heroData.hero_title,
+        hero_title_color: response.data.hero_title_color || '#ffffff'
       });
     } catch (error) {
       console.error('Failed to fetch hero data:', error);
