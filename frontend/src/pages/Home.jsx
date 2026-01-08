@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { books, comingSoonBooks } from '../data/books';
@@ -14,6 +14,26 @@ const Home = () => {
   const comingSoon = comingSoonBooks[0];
   const [homeEmail, setHomeEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [heroData, setHeroData] = useState({
+    hero_image: 'https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png',
+    hero_title: 'Enter In Grey'
+  });
+
+  useEffect(() => {
+    fetchHeroData();
+  }, []);
+
+  const fetchHeroData = async () => {
+    try {
+      const response = await axios.get(`${API}/hero`);
+      setHeroData({
+        hero_image: response.data.hero_image || heroData.hero_image,
+        hero_title: response.data.hero_title || heroData.hero_title
+      });
+    } catch (error) {
+      console.error('Failed to fetch hero data:', error);
+    }
+  };
 
   const handleHomeSubmit = async (e) => {
     e.preventDefault();
@@ -44,14 +64,14 @@ const Home = () => {
       <section className="hero-section">
         <div className="hero-background">
           <img 
-            src="https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png" 
+            src={heroData.hero_image} 
             alt="Hero Background" 
             className="hero-image"
           />
           <div className="hero-overlay"></div>
         </div>
         <div className="hero-content">
-          <h1 className="hero-title">Enter In Grey</h1>
+          <h1 className="hero-title">{heroData.hero_title}</h1>
         </div>
       </section>
 
