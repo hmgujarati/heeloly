@@ -328,6 +328,23 @@ async def update_author_info(data: dict):
     )
     return {"success": True, "message": "Author info updated"}
 
+# Hero Settings Management (Admin)
+@api_router.put("/admin/hero")
+async def update_hero_settings(data: dict):
+    update_data = {}
+    if "hero_image" in data:
+        update_data["hero_image"] = data["hero_image"]
+    if "hero_title" in data:
+        update_data["hero_title"] = data["hero_title"]
+    
+    if update_data:
+        update_data["updated_at"] = datetime.utcnow()
+        await db.admin_settings.update_one(
+            {"id": "admin_settings"},
+            {"$set": update_data}
+        )
+    return {"success": True, "message": "Hero settings updated"}
+
 # Include the router in the main app
 app.include_router(api_router)
 
