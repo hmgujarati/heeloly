@@ -73,7 +73,7 @@ const Home = () => {
           <div className="hero-overlay"></div>
         </div>
         <div className="hero-content">
-          <h1 className="hero-title">{heroData.hero_title}</h1>
+          <h1 className="hero-title" style={{ color: heroData.hero_title_color }}>{heroData.hero_title}</h1>
         </div>
       </section>
 
