@@ -13,7 +13,8 @@ const API = `${BACKEND_URL}/api`;
 const HeroManager = () => {
   const [heroData, setHeroData] = useState({
     hero_image: '',
-    hero_title: ''
+    hero_title: '',
+    hero_title_color: '#ffffff'
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -27,7 +28,8 @@ const HeroManager = () => {
       const response = await axios.get(`${API}/hero`);
       setHeroData({
         hero_image: response.data.hero_image || '',
-        hero_title: response.data.hero_title || ''
+        hero_title: response.data.hero_title || '',
+        hero_title_color: response.data.hero_title_color || '#ffffff'
       });
     } catch (error) {
       console.error('Failed to fetch hero settings:', error);
@@ -78,6 +80,43 @@ const HeroManager = () => {
             </p>
           </div>
 
+          {/* Hero Title Color */}
+          <div className="form-group" style={{ marginBottom: '30px' }}>
+            <Label>Title Font Color</Label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginTop: '8px' }}>
+              <input
+                type="color"
+                value={heroData.hero_title_color}
+                onChange={(e) => setHeroData({ ...heroData, hero_title_color: e.target.value })}
+                style={{ 
+                  width: '60px', 
+                  height: '40px', 
+                  border: '2px solid var(--border-color)',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  background: 'transparent'
+                }}
+              />
+              <Input
+                value={heroData.hero_title_color}
+                onChange={(e) => setHeroData({ ...heroData, hero_title_color: e.target.value })}
+                placeholder="#ffffff"
+                style={{ maxWidth: '150px' }}
+              />
+              <span 
+                style={{ 
+                  padding: '8px 16px', 
+                  background: heroData.hero_title_color, 
+                  color: heroData.hero_title_color === '#ffffff' || heroData.hero_title_color === '#fff' ? '#000' : '#fff',
+                  borderRadius: '4px',
+                  fontWeight: '600'
+                }}
+              >
+                Sample Text
+              </span>
+            </div>
+          </div>
+
           {/* Hero Image */}
           <div className="form-group" style={{ marginBottom: '30px' }}>
             <ImageUpload
@@ -89,52 +128,6 @@ const HeroManager = () => {
               Recommended size: 1920x1080 pixels or larger for best quality
             </p>
           </div>
-
-          {/* Preview */}
-          {heroData.hero_image && (
-            <div style={{ marginBottom: '30px' }}>
-              <Label>Preview</Label>
-              <div style={{ 
-                position: 'relative', 
-                width: '100%', 
-                maxWidth: '800px',
-                height: '300px',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                marginTop: '10px',
-                border: '1px solid var(--border-color)'
-              }}>
-                <img 
-                  src={heroData.hero_image} 
-                  alt="Hero Preview" 
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'cover'
-                  }}
-                />
-                <div style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7))',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <h1 style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: '2.5rem',
-                    color: 'white',
-                    textShadow: '2px 2px 10px rgba(0,0,0,0.5)',
-                    letterSpacing: '0.3em',
-                    textTransform: 'uppercase'
-                  }}>
-                    {heroData.hero_title || 'Hero Title'}
-                  </h1>
-                </div>
-              </div>
-            </div>
-          )}
 
           <Button type="submit" className="btn-primary" disabled={saving}>
             <Save size={18} style={{ marginRight: '8px' }} />
