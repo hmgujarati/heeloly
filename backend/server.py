@@ -111,8 +111,16 @@ async def upload_file(file: UploadFile = File(...)):
         logger.error(f"Error saving file: {e}")
         raise HTTPException(status_code=500, detail="Failed to save file")
     
-    # Return the URL (will be served from /uploads/)
-    return {"url": f"/uploads/{unique_filename}", "filename": unique_filename}
+    # Return the URL through API route for better compatibility
+    return {"url": f"/api/uploads/{unique_filename}", "filename": unique_filename}
+
+@api_router.get("/uploads/{filename}")
+async def get_uploaded_file(filename: str):
+    """Serve uploaded files through API route"""
+    file_path = UPLOADS_DIR / filename
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(file_path)
 
 @api_router.get("/")
 async def root():
