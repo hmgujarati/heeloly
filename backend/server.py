@@ -338,6 +338,8 @@ async def update_hero_settings(data: dict):
         update_data["hero_image"] = data["hero_image"]
     if "hero_title" in data:
         update_data["hero_title"] = data["hero_title"]
+    if "hero_title_color" in data:
+        update_data["hero_title_color"] = data["hero_title_color"]
     
     if update_data:
         update_data["updated_at"] = datetime.utcnow()
