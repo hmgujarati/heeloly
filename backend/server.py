@@ -186,11 +186,13 @@ async def get_hero_settings():
     if not settings:
         return {
             "hero_image": "https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png",
-            "hero_title": "Enter In Grey"
+            "hero_title": "Enter In Grey",
+            "hero_title_color": "#ffffff"
         }
     return {
         "hero_image": settings.get("hero_image", "https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png"),
-        "hero_title": settings.get("hero_title", "Enter In Grey")
+        "hero_title": settings.get("hero_title", "Enter In Grey"),
+        "hero_title_color": settings.get("hero_title_color", "#ffffff")
     }
 
 # ============================================
