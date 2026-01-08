@@ -260,6 +260,9 @@ async def seed_database():
                 "pinterest": "#",
                 "spotify": "#"
             },
+            "hero_image": "https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png",
+            "hero_title": "Enter In Grey",
+            "hero_title_color": "#ffffff",
             "updated_at": datetime.utcnow()
         }
         await db.admin_settings.insert_one(admin_settings)
