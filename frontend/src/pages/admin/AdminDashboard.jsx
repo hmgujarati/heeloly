@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
 import { 
   BookOpen, MessageSquare, Mail, Settings, LogOut, 
-  PlusCircle, FileText, Link as LinkIcon
+  PlusCircle, FileText, Link as LinkIcon, Image as ImageIcon
 } from 'lucide-react';
 import BooksManager from './BooksManager';
 import FAQManager from './FAQManager';
@@ -11,6 +11,7 @@ import ExtrasManager from './ExtrasManager';
 import NewsletterView from './NewsletterView';
 import ContactView from './ContactView';
 import SettingsManager from './SettingsManager';
+import HeroManager from './HeroManager';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
