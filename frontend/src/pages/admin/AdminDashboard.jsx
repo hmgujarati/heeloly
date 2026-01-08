@@ -85,6 +85,7 @@ const AdminDashboard = () => {
       {/* Content Area */}
       <div className="admin-content">
         <div className="container">
+          {activeTab === 'hero' && <HeroManager />}
           {activeTab === 'books' && <BooksManager />}
           {activeTab === 'faqs' && <FAQManager />}
           {activeTab === 'extras' && <ExtrasManager />}
