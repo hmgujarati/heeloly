@@ -180,6 +180,19 @@ async def get_author_info():
         "social_links": settings.get("social_links", {})
     }
 
+@api_router.get("/hero")
+async def get_hero_settings():
+    settings = await db.admin_settings.find_one({"id": "admin_settings"})
+    if not settings:
+        return {
+            "hero_image": "https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png",
+            "hero_title": "Enter In Grey"
+        }
+    return {
+        "hero_image": settings.get("hero_image", "https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png"),
+        "hero_title": settings.get("hero_title", "Enter In Grey")
+    }
+
 # ============================================
 # ADMIN ROUTES
 # ============================================
