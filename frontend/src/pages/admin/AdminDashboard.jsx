@@ -15,7 +15,7 @@ import HeroManager from './HeroManager';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('books');
+  const [activeTab, setActiveTab] = useState('hero');
 
   useEffect(() => {
     const isAuth = sessionStorage.getItem('adminAuth');
