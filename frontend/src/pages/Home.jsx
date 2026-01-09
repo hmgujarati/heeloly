@@ -121,13 +121,15 @@ const Home = () => {
             </div>
           </div>
           <div className="books-showcase">
-            <div className="book-display">
-              <img src={newRelease.coverImage} alt={newRelease.title} className="book-cover" />
-              <div className="book-badge new-release">New Release</div>
-            </div>
+            {newRelease && (
+              <div className="book-display">
+                <img src={newRelease.cover_image} alt={newRelease.title} className="book-cover" />
+                <div className="book-badge new-release">New Release</div>
+              </div>
+            )}
             {comingSoon && (
               <div className="book-display coming-soon-display">
-                <img src={comingSoon.coverImage} alt={comingSoon.title} className="book-cover" />
+                <img src={comingSoon.cover_image} alt={comingSoon.title} className="book-cover" />
                 <div className="book-badge coming-soon">Coming Soon</div>
               </div>
             )}
