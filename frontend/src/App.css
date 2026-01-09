@@ -1168,6 +1168,96 @@ body {
   .book-modal-content {
     grid-template-columns: 1fr;
   }
+
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+  }
+
+  .book-card-content {
+    padding: var(--spacing-sm);
+  }
+
+  .book-card-title {
+    font-size: 0.95rem;
+  }
+
+  .book-card-author {
+    font-size: 0.8rem;
+  }
+
+  .book-status-badge {
+    padding: 4px 8px;
+    font-size: 0.65rem;
+  }
+
+  .book-modal {
+    max-width: 95vw;
+    max-height: 90vh;
+    margin: 10px;
+  }
+
+  .book-modal-content {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+    max-height: 75vh;
+    overflow-y: auto;
+  }
+
+  .book-modal-image {
+    max-width: 150px;
+    margin: 0 auto;
+  }
+
+  .book-modal-title {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .book-modal-author {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .book-modal-release {
+    text-align: center;
+  }
+
+  .book-genres {
+    justify-content: center;
+  }
+
+  .book-blurb {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .book-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .book-card-title {
+    font-size: 0.85rem;
+  }
+
+  .book-card-author {
+    font-size: 0.75rem;
+  }
+
+  .book-modal-image {
+    max-width: 120px;
+  }
+
+  .book-modal-title {
+    font-size: 1.1rem;
+  }
 }
 
 /* ============================================
