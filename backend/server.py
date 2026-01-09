@@ -349,12 +349,11 @@ async def update_author_info(data: dict):
 @api_router.put("/admin/hero")
 async def update_hero_settings(data: dict):
     update_data = {}
-    if "hero_image" in data:
-        update_data["hero_image"] = data["hero_image"]
-    if "hero_title" in data:
-        update_data["hero_title"] = data["hero_title"]
-    if "hero_title_color" in data:
-        update_data["hero_title_color"] = data["hero_title_color"]
+    allowed_fields = ["hero_image", "hero_title", "hero_title_color", "about_title", "about_content", "about_image"]
+    
+    for field in allowed_fields:
+        if field in data:
+            update_data[field] = data[field]
     
     if update_data:
         update_data["updated_at"] = datetime.utcnow()
@@ -362,7 +361,7 @@ async def update_hero_settings(data: dict):
             {"id": "admin_settings"},
             {"$set": update_data}
         )
-    return {"success": True, "message": "Hero settings updated"}
+    return {"success": True, "message": "Settings updated"}
 
 # Include the router in the main app
 app.include_router(api_router)
