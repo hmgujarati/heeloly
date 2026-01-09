@@ -1167,6 +1167,7 @@ body {
 @media (max-width: 768px) {
   .book-modal-content {
     grid-template-columns: 1fr;
+    text-align: center;
   }
 
   .books-grid {
@@ -1202,11 +1203,21 @@ body {
     gap: var(--spacing-sm);
     max-height: 75vh;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .book-modal-image {
     max-width: 150px;
     margin: 0 auto;
+  }
+
+  .book-modal-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .book-modal-title {
@@ -1230,6 +1241,7 @@ body {
   .book-blurb {
     font-size: 0.9rem;
     line-height: 1.6;
+    text-align: center;
   }
 
   .book-links {
