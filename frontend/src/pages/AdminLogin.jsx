@@ -4,25 +4,38 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Lock } from 'lucide-react';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Change this password to whatever you want
-  const ADMIN_PASSWORD = 'heeloly2025'; // ← CHANGE THIS PASSWORD!
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError('');
     
-    if (password === ADMIN_PASSWORD) {
-      // Store login status
-      sessionStorage.setItem('adminAuth', 'true');
-      navigate('/admin');
-    } else {
-      setError('Incorrect password. Please try again.');
+    try {
+      const response = await axios.post(`${API}/admin/login`, { password });
+      if (response.data.success) {
+        // Store login status
+        sessionStorage.setItem('adminAuth', 'true');
+        navigate('/admin');
+      }
+    } catch (err) {
+      if (err.response?.status === 401) {
+        setError('Incorrect password. Please try again.');
+      } else {
+        setError('Login failed. Please try again.');
+      }
       setPassword('');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -69,6 +82,7 @@ const AdminLogin = () => {
               placeholder="Enter admin password"
               style={{ marginTop: '8px' }}
               autoFocus
+              disabled={isLoading}
             />
           </div>
 
@@ -86,8 +100,8 @@ const AdminLogin = () => {
             </div>
           )}
 
-          <Button type="submit" className="btn-primary" style={{ width: '100%' }}>
-            Login
+          <Button type="submit" className="btn-primary" style={{ width: '100%' }} disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Login'}
           </Button>
         </form>
 
@@ -98,16 +112,15 @@ const AdminLogin = () => {
           textAlign: 'center'
         }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-            Forgot password? Check your code in<br />
-            <code style={{ 
+            Default password: <code style={{ 
               background: 'var(--bg-primary)', 
               padding: '2px 8px', 
               borderRadius: '4px',
               color: 'var(--accent-gold)',
               fontSize: '0.8rem'
-            }}>
-              /frontend/src/pages/AdminLogin.jsx
-            </code>
+            }}>heeloly2025</code>
+            <br />
+            <span style={{ fontSize: '0.75rem' }}>Change it in Admin → Settings</span>
           </p>
         </div>
       </div>
