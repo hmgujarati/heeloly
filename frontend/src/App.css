@@ -1254,19 +1254,23 @@ body {
   }
 
   .book-modal {
-    max-width: 95vw;
-    max-height: 90vh;
-    margin: 10px;
+    max-width: 90vw !important;
+    width: 90vw !important;
+    margin: 0 auto;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
   }
 
   .book-modal-content {
     padding: var(--spacing-sm);
     gap: var(--spacing-sm);
-    max-height: 75vh;
+    max-height: 70vh;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .book-modal-image {
@@ -1279,11 +1283,15 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
   }
 
   .book-modal-title {
     font-size: 1.3rem;
     text-align: center;
+    word-wrap: break-word;
   }
 
   .book-modal-author {
@@ -1303,6 +1311,7 @@ body {
     font-size: 0.9rem;
     line-height: 1.6;
     text-align: center;
+    word-wrap: break-word;
   }
 
   .book-links {
@@ -1324,12 +1333,21 @@ body {
     font-size: 0.75rem;
   }
 
+  .book-modal {
+    max-width: 95vw !important;
+    width: 95vw !important;
+  }
+
   .book-modal-image {
     max-width: 120px;
   }
 
   .book-modal-title {
     font-size: 1.1rem;
+  }
+
+  .book-blurb {
+    font-size: 0.85rem;
   }
 }
 
