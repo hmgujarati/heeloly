@@ -902,6 +902,30 @@ body {
     flex-direction: column;
     align-items: center;
   }
+
+  .about-preview-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about-preview-image {
+    width: 200px;
+    height: 200px;
+  }
+
+  .about-preview-text-content .section-title {
+    text-align: center;
+  }
+
+  .about-preview-text {
+    text-align: center;
+  }
+
+  .about-preview-text-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 /* ============================================
