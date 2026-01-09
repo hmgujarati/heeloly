@@ -17,7 +17,10 @@ const Home = () => {
   const [heroData, setHeroData] = useState({
     hero_image: 'https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png',
     hero_title: 'Enter In Grey',
-    hero_title_color: '#ffffff'
+    hero_title_color: '#ffffff',
+    about_title: 'About Heeloly Upasani',
+    about_content: '',
+    about_image: ''
   });
 
   useEffect(() => {
@@ -30,7 +33,10 @@ const Home = () => {
       setHeroData({
         hero_image: response.data.hero_image || heroData.hero_image,
         hero_title: response.data.hero_title || heroData.hero_title,
-        hero_title_color: response.data.hero_title_color || '#ffffff'
+        hero_title_color: response.data.hero_title_color || '#ffffff',
+        about_title: response.data.about_title || 'About Heeloly Upasani',
+        about_content: response.data.about_content || '',
+        about_image: response.data.about_image || ''
       });
     } catch (error) {
       console.error('Failed to fetch hero data:', error);
