@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { books, comingSoonBooks } from '../data/books';
 import { ArrowRight } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -10,10 +9,10 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 const Home = () => {
-  const newRelease = books[0];
-  const comingSoon = comingSoonBooks[0];
   const [homeEmail, setHomeEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [newRelease, setNewRelease] = useState(null);
+  const [comingSoon, setComingSoon] = useState(null);
   const [heroData, setHeroData] = useState({
     hero_image: 'https://customer-assets.emergentagent.com/job_writer-hub-11/artifacts/ie4guwi3_Untitled%20design%20%2855%29.png',
     hero_title: 'Enter In Grey',
@@ -25,6 +24,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchHeroData();
+    fetchBooks();
   }, []);
 
   const fetchHeroData = async () => {
@@ -40,6 +40,30 @@ const Home = () => {
       });
     } catch (error) {
       console.error('Failed to fetch hero data:', error);
+    }
+  };
+
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get(`${API}/books`);
+      const books = response.data;
+      
+      // Get the latest new release (status: new-release or available)
+      const newReleaseBooks = books.filter(b => b.status === 'new-release' || b.status === 'available');
+      if (newReleaseBooks.length > 0) {
+        // Sort by created_at descending to get the latest
+        newReleaseBooks.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        setNewRelease(newReleaseBooks[0]);
+      }
+      
+      // Get the latest coming soon book
+      const upcomingBooks = books.filter(b => b.status === 'upcoming');
+      if (upcomingBooks.length > 0) {
+        upcomingBooks.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        setComingSoon(upcomingBooks[0]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch books:', error);
     }
   };
 
