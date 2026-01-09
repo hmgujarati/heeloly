@@ -1256,15 +1256,15 @@ body {
   .book-modal {
     max-width: 90vw !important;
     width: 90vw !important;
+    max-height: 80vh !important;
     margin: 0 auto;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
+    padding: 15px !important;
   }
 
   .book-modal-content {
-    padding: var(--spacing-sm);
-    gap: var(--spacing-sm);
-    max-height: 70vh;
+    padding: 10px;
+    gap: 10px;
+    max-height: 60vh;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -1274,8 +1274,13 @@ body {
   }
 
   .book-modal-image {
-    max-width: 150px;
+    max-width: 100px;
     margin: 0 auto;
+  }
+
+  .book-modal-image img {
+    max-height: 150px;
+    width: auto;
   }
 
   .book-modal-details {
@@ -1284,38 +1289,55 @@ body {
     align-items: center;
     text-align: center;
     width: 100%;
-    padding: 0 10px;
+    padding: 0;
     box-sizing: border-box;
   }
 
   .book-modal-title {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     text-align: center;
     word-wrap: break-word;
+    margin-bottom: 5px;
   }
 
   .book-modal-author {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-align: center;
+    margin-bottom: 5px;
   }
 
   .book-modal-release {
     text-align: center;
+    font-size: 0.8rem;
   }
 
   .book-genres {
     justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .genre-tag {
+    font-size: 0.7rem;
+    padding: 3px 8px;
   }
 
   .book-blurb {
-    font-size: 0.9rem;
-    line-height: 1.6;
+    font-size: 0.8rem;
+    line-height: 1.5;
     text-align: center;
     word-wrap: break-word;
+    margin-bottom: 10px;
+    max-height: 100px;
+    overflow-y: auto;
   }
 
   .book-links {
     justify-content: center;
+  }
+
+  .book-links .btn-primary {
+    padding: 8px 16px;
+    font-size: 0.85rem;
   }
 }
 
@@ -1334,20 +1356,31 @@ body {
   }
 
   .book-modal {
-    max-width: 95vw !important;
-    width: 95vw !important;
+    max-width: 92vw !important;
+    width: 92vw !important;
+    max-height: 75vh !important;
+    padding: 12px !important;
+  }
+
+  .book-modal-content {
+    max-height: 55vh;
   }
 
   .book-modal-image {
-    max-width: 120px;
+    max-width: 80px;
+  }
+
+  .book-modal-image img {
+    max-height: 120px;
   }
 
   .book-modal-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .book-blurb {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    max-height: 80px;
   }
 }
 
