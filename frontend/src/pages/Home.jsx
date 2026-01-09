@@ -114,15 +114,24 @@ const Home = () => {
       {/* About Preview Section */}
       <section className="about-preview-section">
         <div className="container">
-          <h2 className="section-title">About Heeloly Upasani</h2>
-          <p className="about-preview-text">
-            Heeloly Upasani is an author dedicated to crafting stories that inspire, transform, and resonate deeply with readers. With a unique voice that blends emotional depth with compelling narratives, her work explores the human experience in all its complexity.
-          </p>
-          <Button className="btn-secondary" asChild>
-            <Link to="/about">
-              Learn More <ArrowRight size={16} className="ml-2" />
-            </Link>
-          </Button>
+          <div className="about-preview-content">
+            {heroData.about_image && (
+              <div className="about-preview-image">
+                <img src={heroData.about_image} alt={heroData.about_title} />
+              </div>
+            )}
+            <div className="about-preview-text-content">
+              <h2 className="section-title">{heroData.about_title || 'About Heeloly Upasani'}</h2>
+              <p className="about-preview-text">
+                {heroData.about_content || 'Heeloly Upasani is an author dedicated to crafting stories that inspire, transform, and resonate deeply with readers. With a unique voice that blends emotional depth with compelling narratives, her work explores the human experience in all its complexity.'}
+              </p>
+              <Button className="btn-secondary" asChild>
+                <Link to="/bio">
+                  Learn More <ArrowRight size={16} className="ml-2" />
+                </Link>
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
 
